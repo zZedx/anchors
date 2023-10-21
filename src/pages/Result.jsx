@@ -85,13 +85,13 @@ function OtherVideos({channelId}){
 
 export default Result;
 
-export function Loader() {
-  const query = new URLSearchParams(window.location.search);
-  const videoId = query.get("q");
+export function Loader({params}) {
+  const query = params.videoId
+//   const videoId = query.get("q");
 
   async function fetchResult() {
     const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${query}&key=${API_KEY}`
     );
     const data = await res.json();
     return data.items[0];

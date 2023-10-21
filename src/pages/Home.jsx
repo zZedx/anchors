@@ -9,7 +9,7 @@ const Home = () => {
         if(query){
             const video = new URLSearchParams(new URL(query).search);
             const videoId = video.get('v');
-            navigate(`/result?q=${videoId}`);
+            navigate(`/result/${videoId}`);
         }
     }
   return (

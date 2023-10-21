@@ -13,7 +13,7 @@ const router = createBrowserRouter([
       },
       {
         element: <Result />,
-        path: "/result",
+        path: "/result/:videoId",
         loader : Loader
       }
     ],
