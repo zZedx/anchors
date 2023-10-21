@@ -28,7 +28,7 @@ const Home = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button className="px-6 py-2 bg-orange-600 rounded-full">SUBMIT</button>
+          <button className="px-6 py-2 bg-orange-600 rounded-full font-semibold">SUBMIT</button>
         </form>
       </div>
     </div>

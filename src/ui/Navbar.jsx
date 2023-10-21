@@ -1,15 +1,29 @@
 import { useState } from "react";
 import Popup from "../components/Popup";
+import { useNavigate, useNavigation } from "react-router-dom";
+import Loader from "./Loader";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
+  const navigate = useNavigate();
   return (
     <>
-    {active && <Popup setActive={setActive}/>}
-    <div className="px-36 py-6 flex justify-between">
-      <img src="anchorslogo.png" alt="" className="h-10"/>
-      <button className="px-3 rounded-full border" onClick={()=> setActive(true)}>Request a call back</button>
-    </div>
+      <Loader />
+      {active && <Popup setActive={setActive} />}
+      <div className="px-36 py-6 flex justify-between">
+        <img
+          src="anchorslogo.png"
+          onClick={() => navigate("/")}
+          alt=""
+          className="h-10 cursor-pointer"
+        />
+        <button
+          className="px-3 rounded-full border hover:bg-white hover:text-black transition-all"
+          onClick={() => setActive(true)}
+        >
+          <i className="fa-solid fa-phone text-sm mr-2"></i> Request a call back
+        </button>
+      </div>
     </>
   );
 };
