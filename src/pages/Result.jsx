@@ -82,17 +82,17 @@ const Result = () => {
 
 function OtherVideos({ channelId, subscriberCount }) {
   const [videosId, setVideosId] = useState([]);
-  useEffect(() => {
-    async function fetchTopVideo() {
-      const res =
-        await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&order=viewCount&maxResults=2
-            `);
-      const data = await res.json();
-      const videoId = data.items.map((item) => item.id.videoId);
-      setVideosId(videoId);
-    }
-    fetchTopVideo();
-  }, [channelId]);
+//   useEffect(() => {
+//     async function fetchTopVideo() {
+//       const res =
+//         await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&order=viewCount&maxResults=2
+//             `);
+//       const data = await res.json();
+//       const videoId = data.items.map((item) => item.id.videoId);
+//       setVideosId(videoId);
+//     }
+//     fetchTopVideo();
+//   }, [channelId]);
   return (
     <div className="w-3/4 mx-auto mt-16 flex flex-col gap-4 items-center">
       <span className="text-[#b7b7b7] font-bold text-lg">
