@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import AppLayout from "./ui/AppLayout";
-import Result from "./pages/Result";
+import Result , {Loader} from "./pages/Result";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +14,7 @@ const router = createBrowserRouter([
       {
         element: <Result />,
         path: "/result",
+        loader : Loader
       }
     ],
   },
