@@ -15,7 +15,7 @@ const Home = () => {
   return (
     <div className="w-full flex justify-center">
       <div className="w-1/3 mt-10 text-center space-y-8">
-        <h1 className="font-bold text-5xl">Discorver your earning potential</h1>
+        <h1 className="font-bold text-5xl">Discover your earning potential</h1>
         <p className="text-white/70 text-lg">
           Turn your Youtube expertise into a lucrative income through resource
           sharing
