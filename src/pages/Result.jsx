@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import { fetchVideo } from "../services/api";
 
-const API_KEY = "AIzaSyDWTEnlPDVFyklIuZ1cHxM6l4gBcj_RDRE";
+const API_KEY = "AIzaSyClFZLm4Z_1oo30FkNQIPl0tKy_EIWichM";
 
 function formatDate(date) {
   const inputDate = new Date(date);
@@ -37,7 +38,7 @@ const Result = () => {
       <main className="bg-[#1e1e1e] px-10 py-6 rounded-2xl w-3/4 m-auto mt-10 flex justify-between">
         <div className="flex flex-col gap-4">
           <span className="bg-[#707070] px-3 py-1 w-fit rounded-lg">
-          <i className="fa-solid fa-medal"></i> Top earner video
+            <i className="fa-solid fa-medal"></i> Top earner video
           </span>
           <div className="flex gap-6 items-center">
             <img
@@ -69,32 +70,108 @@ const Result = () => {
               10 * commentCount +
               5 * likeCount}
           </span>
-          <button className="px-12 py-2 bg-white rounded-full">View</button>
+          <button className="px-12 py-2 bg-white rounded-full text-black">
+            Check How?
+          </button>
         </div>
       </main>
-      <OtherVideos channelId={channelId}/>
+      <OtherVideos channelId={channelId} subscriberCount={subscriberCount} />
     </div>
   );
 };
 
-function OtherVideos({channelId}){
-    return <div>
-        <span>Other Videos Potentials</span>
+function OtherVideos({ channelId, subscriberCount }) {
+  const [videosId, setVideosId] = useState([]);
+  useEffect(() => {
+    async function fetchTopVideo() {
+      const res =
+        await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&order=viewCount&maxResults=2
+            `);
+      const data = await res.json();
+      const videoId = data.items.map((item) => item.id.videoId);
+      setVideosId(videoId);
+    }
+    fetchTopVideo();
+  }, [channelId]);
+  return (
+    <div className="w-3/4 mx-auto mt-16 flex flex-col gap-4 items-center">
+      <span className="text-[#b7b7b7] font-bold text-lg">
+        Other Videos Potentials
+      </span>
+      <table className="w-full text-center px-4 py-3">
+        <thead className="bg-[#1e1e1e] border-b-2 border-black h-16">
+          <tr>
+            <th>Rank</th>
+            <th>Title</th>
+            <th>Thumbnail</th>
+            <th>Views</th>
+            <th>Likes</th>
+            <th>Comments</th>
+            <th>Uploaded on</th>
+            <th>Estimated Earning</th>
+          </tr>
+        </thead>
+        <tbody className="bg-[#171717]">
+          {videosId.map((id, i) => (
+            <VideoItem
+              key={id}
+              id={id}
+              i={i}
+              subscriberCount={subscriberCount}
+            />
+          ))}
+        </tbody>
+      </table>
     </div>
+  );
+}
+
+function VideoItem({ id, i, subscriberCount }) {
+//   const [video, setVideo] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [statistics, setStatistics] = useState({});
+  const [snippet, setSnippet] = useState({});
+  //   const { viewCount, likeCount, commentCount } = video.statistics;
+  //   const { thumbnails, title, publishedAt } = video.snippet;
+  useEffect(() => {
+    setLoading(true);
+    fetchVideo(id).then((data) => {
+      setStatistics(data.statistics);
+      setSnippet(data.snippet);
+    });
+    setLoading(false);
+  }, [id]);
+
+  if (loading) {
+    return (
+      <tr>
+        <td>{i + 1}</td>
+        <td>Loading...</td>
+      </tr>
+    );
+  }
+  return (
+    <tr className="h-20">
+      <td>{i + 2}</td>
+      <td>{snippet?.title}</td>
+      <td><img src={snippet?.thumbnails?.medium.url} alt="" className="h-16 m-auto object-cover rounded-lg"/></td>
+      <td>{statistics?.viewCount}</td>
+      <td>{statistics?.likeCount}</td>
+      <td>{statistics?.commentCount}</td>
+      <td>{formatDate(snippet?.publishedAt)}</td>
+      <td>
+        {Math.min(subscriberCount, statistics?.viewCount) +
+          10 * statistics?.commentCount +
+          5 * statistics?.likeCount}
+      </td>
+    </tr>
+  );
 }
 
 export default Result;
 
-export function Loader({params}) {
-  const query = params.videoId
-//   const videoId = query.get("q");
-
-  async function fetchResult() {
-    const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${query}&key=${API_KEY}`
-    );
-    const data = await res.json();
-    return data.items[0];
-  }
-  return fetchResult();
+export async function Loader({ params }) {
+  const query = params.videoId;
+  const result = fetchVideo(query);
+  return result;
 }
