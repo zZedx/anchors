@@ -33,7 +33,7 @@ const Result = () => {
   }, [channelId]);
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-14">
       <main className="bg-[#1e1e1e] px-10 py-6 rounded-2xl w-3/4 m-auto mt-10 flex justify-between">
         <div className="flex flex-col gap-4">
           <span className="bg-[#707070] px-3 py-1 w-fit rounded-lg">
@@ -152,7 +152,7 @@ function VideoItem({ id, i, subscriberCount }) {
   return (
     <tr className="h-20">
       <td>{i + 2}</td>
-      <td>{snippet?.title}</td>
+      <td className="text-left">{snippet?.title}</td>
       <td>
         <img
           src={snippet?.thumbnails?.medium.url}
