@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Popup from "../components/Popup";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 
 const Navbar = () => {
